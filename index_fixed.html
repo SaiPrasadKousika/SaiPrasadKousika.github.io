@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Sai Prasad Kousika — software engineer working on databases, query engines, and private software." />
+  <meta name="theme-color" content="#f1eee5" />
+  <title>Sai Prasad Kousika — Field Notes</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+    :root {
+      --paper: #f1eee5;
+      --paper-2: #e7e2d5;
+      --ink: #1c2925;
+      --muted: #626a60;
+      --line: rgba(28, 41, 37, .19);
+      --red: #d84d31;
+      --blue: #294cdb;
+      --green: #c8d9a5;
+      --card: #e9e5da;
+      --shadow: 7px 7px 0 rgba(28,41,37,.12);
+      --mono: 'DM Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+      --display: 'Space Grotesk', sans-serif;
+      --body: 'DM Sans', sans-serif;
+    }
+    [data-theme="night"] {
+      --paper: #17201c;
+      --paper-2: #202b25;
+      --ink: #f1eee5;
+      --muted: #a8b2a8;
+      --line: rgba(241,238,229,.19);
+      --red: #ff795a;
+      --blue: #9cafff;
+      --green: #3d503b;
+      --card: #202b25;
+      --shadow: 7px 7px 0 rgba(0,0,0,.2);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+    body {
+      margin: 0; color: var(--ink); background: var(--paper); font-family: var(--body);
+      transition: background .25s, color .25s; overflow-x: hidden;
+    }
+    body::before {
+      content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 20; opacity: .13;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.18'/%3E%3C/svg%3E");
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; color: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    button:focus-visible, a:focus-visible { outline: 3px solid var(--blue); outline-offset: 4px; }
+    .shell { width: min(1280px, calc(100% - 64px)); margin: 0 auto; }
+    .mono { font-family: var(--mono); text-transform: uppercase; letter-spacing: .09em; font-size: .68rem; }
+    .topbar {
+      border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 15;
+      background: color-mix(in srgb, var(--paper) 90%, transparent); backdrop-filter: blur(14px);
+    }
+    .topbar-inner { min-height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .wordmark { display: flex; gap: 10px; align-items: center; font-family: var(--display); font-weight: 700; letter-spacing: -.05em; }
+    .stamp { width: 27px; height: 27px; background: var(--red); color: #fff; display: grid; place-items: center; transform: rotate(-7deg); font-size: .75rem; }
+    .nav { display: flex; gap: 26px; align-items: center; }
+    .nav a { color: var(--muted); font-size: .83rem; }
+    .nav a:hover { color: var(--red); }
+    .theme-toggle { border: 1px solid var(--line); background: transparent; padding: 7px 10px; cursor: pointer; font-family: var(--mono); font-size: .68rem; }
+    .hero { padding: 76px 0 60px; border-bottom: 1px solid var(--line); }
+    .hero-grid { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(270px, .7fr); gap: 55px; align-items: end; }
+    .kicker { display: flex; align-items: center; gap: 10px; color: var(--red); }
+    .kicker::before { content: ""; width: 32px; height: 2px; background: var(--red); }
+    h1 { font: 600 clamp(3.8rem, 9vw, 8.7rem)/.87 var(--display); letter-spacing: -.095em; margin: 27px 0 30px; max-width: 900px; }
+    h1 .outline { color: transparent; -webkit-text-stroke: 1.5px var(--ink); }
+    h1 .slash { color: var(--red); }
+    .hero-copy { max-width: 565px; color: var(--muted); font-size: 1.05rem; line-height: 1.8; }
+    .hero-copy strong { color: var(--ink); font-weight: 600; }
+    .hero-aside { border-left: 1px solid var(--line); padding-left: 24px; }
+    .index-label { color: var(--muted); margin-bottom: 16px; }
+    .big-number { font: 600 clamp(4.2rem, 8vw, 7rem)/.9 var(--display); letter-spacing: -.09em; color: var(--red); }
+    .aside-note { max-width: 250px; font-size: .9rem; line-height: 1.6; margin-top: 18px; }
+    .hero-links { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 28px; }
+    .link-button { display: inline-flex; align-items: center; gap: 14px; padding: 12px 15px; background: var(--ink); color: var(--paper); border: 1px solid var(--ink); font-size: .84rem; transition: transform .2s, background .2s; }
+    .link-button:hover { transform: translate(-2px,-2px); background: var(--red); border-color: var(--red); color: white; }
+    .link-button.secondary { background: transparent; color: var(--ink); border-color: var(--line); }
+    .link-button.secondary:hover { color: white; }
+    .ticker { overflow: hidden; border-bottom: 1px solid var(--line); background: var(--green); color: #263326; }
+    .ticker-track { display: flex; width: max-content; animation: ticker 30s linear infinite; padding: 12px 0; gap: 30px; }
+    .ticker-track span { font: 500 .68rem var(--mono); text-transform: uppercase; letter-spacing: .12em; white-space: nowrap; }
+    .ticker-track b { color: var(--red); }
+    @keyframes ticker { to { transform: translateX(-50%); } }
+    .section { padding: 76px 0; border-bottom: 1px solid var(--line); }
+    .section-head { display: grid; grid-template-columns: 180px 1fr; gap: 30px; margin-bottom: 35px; }
+    .section-index { color: var(--red); padding-top: 10px; }
+    h2 { font: 600 clamp(2.3rem, 5vw, 4.6rem)/.98 var(--display); letter-spacing: -.075em; margin: 0; }
+    .section-intro { color: var(--muted); max-width: 600px; margin: 14px 0 0; line-height: 1.75; }
+    .about-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+    .manifesto { border: 1px solid var(--line); padding: 28px; min-height: 260px; position: relative; overflow: hidden; }
+    .manifesto .quote-mark { position: absolute; right: 12px; bottom: -65px; font: 700 19rem/.8 var(--display); color: var(--red); opacity: .11; pointer-events: none; }
+    .manifesto p { font: 500 clamp(1.4rem, 2.7vw, 2.3rem)/1.25 var(--display); letter-spacing: -.045em; max-width: 460px; position: relative; }
+    .manifesto p em { color: var(--red); font-style: normal; }
+    .facts { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+    .fact { min-height: 130px; padding: 20px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .fact .mono { color: var(--muted); }
+    .fact strong { display: block; font: 600 1.35rem var(--display); margin-top: 12px; letter-spacing: -.04em; }
+    .fact small { display: block; color: var(--muted); margin-top: 4px; }
+    .filter-row { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+    .filter-btn { cursor: pointer; border: 1px solid var(--line); padding: 9px 13px; background: transparent; font-size: .78rem; }
+    .filter-btn[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+    .project-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 15px; }
+    .project {
+      border: 1px solid var(--line); background: var(--card); min-height: 300px; display: flex; flex-direction: column;
+      position: relative; transition: transform .2s, box-shadow .2s; overflow: hidden;
+    }
+    .project:hover { transform: translate(-3px,-3px); box-shadow: var(--shadow); }
+    .project[hidden] { display: none; }
+    .project-top { padding: 20px 21px 0; display: flex; justify-content: space-between; gap: 15px; align-items: flex-start; }
+    .project-type { color: var(--red); }
+    .project-number { color: var(--muted); }
+    .project-main { padding: 22px 21px 20px; display: flex; flex-direction: column; flex: 1; }
+    .project h3 { font: 600 clamp(1.55rem, 3vw, 2.35rem)/1 var(--display); letter-spacing: -.065em; margin: 0; max-width: 470px; }
+    .project p { color: var(--muted); line-height: 1.7; font-size: .92rem; max-width: 520px; }
+    .project-bottom { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: auto; padding-top: 17px; border-top: 1px solid var(--line); }
+    .chips { display: flex; gap: 6px; flex-wrap: wrap; }
+    .chip { font: .63rem var(--mono); padding: 5px 7px; border: 1px solid var(--line); color: var(--muted); }
+    .project-link { color: var(--red); font-size: .82rem; font-weight: 700; white-space: nowrap; }
+    .cove { grid-column: 1 / -1; min-height: 360px; background: #1c332d; color: #f2f0e7; border-color: #1c332d; }
+    .cove .project-type, .cove .project-link { color: #c8d9a5; }
+    .cove .project-number, .cove p { color: #b6c6ba; }
+    .cove .project-bottom { border-color: rgba(242,240,231,.22); }
+    .cove .chip { color: #d6e0d5; border-color: rgba(242,240,231,.28); }
+    .cove .cove-art { position: absolute; width: 250px; height: 250px; right: 6%; top: 17%; opacity: .92; pointer-events: none; }
+    .cove .project-main { max-width: 62%; position: relative; z-index: 1; }
+    .cove h3 { font-size: clamp(2.8rem, 6vw, 5.4rem); }
+    .cove .project-top, .cove .project-main { padding-left: 28px; padding-right: 28px; }
+    .cove .project-bottom { max-width: 610px; }
+    .orbital { transform-origin: center; animation: slowspin 24s linear infinite; }
+    .orbital:nth-child(2) { animation-direction: reverse; animation-duration: 34s; }
+    @keyframes slowspin { to { transform: rotate(360deg); } }
+    .experience-list { border-top: 1px solid var(--line); }
+    .exp-row { display: grid; grid-template-columns: 180px minmax(0,1fr) 35px; gap: 25px; padding: 22px 0; border-bottom: 1px solid var(--line); align-items: start; }
+    .exp-date { color: var(--muted); padding-top: 5px; }
+    .exp-title { font: 600 1.45rem/1.15 var(--display); letter-spacing: -.04em; }
+    .exp-company { color: var(--red); margin-top: 5px; font-size: .86rem; }
+    .exp-details { color: var(--muted); line-height: 1.7; font-size: .9rem; max-width: 700px; }
+    .exp-details p { margin: 12px 0 0; }
+    .exp-toggle { width: 32px; height: 32px; border: 1px solid var(--line); background: transparent; cursor: pointer; font-size: 1.1rem; }
+    .exp-row[data-open="false"] .exp-details { display: none; }
+    .exp-row[data-open="true"] .exp-toggle { background: var(--red); color: white; border-color: var(--red); }
+    .education-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+    .edu-card { border: 1px solid var(--line); padding: 23px; }
+    .edu-year { color: var(--red); }
+    .edu-card h3 { font: 600 1.7rem/1.1 var(--display); letter-spacing: -.05em; margin: 18px 0 8px; }
+    .edu-card p { color: var(--muted); margin: 0; }
+    .rank { display: flex; align-items: baseline; gap: 13px; margin-top: 36px; }
+    .rank strong { font: 600 clamp(3rem, 6vw, 5rem)/.9 var(--display); letter-spacing: -.09em; color: var(--red); }
+    .rank span { color: var(--muted); max-width: 180px; font-size: .85rem; }
+    .contact-section { background: var(--red); color: #fff; border: 0; }
+    .contact-section .section-index, .contact-section .section-intro { color: rgba(255,255,255,.75); }
+    .contact-section h2 { max-width: 800px; }
+    .contact-bottom { display: flex; align-items: end; justify-content: space-between; gap: 25px; margin-top: 35px; }
+    .contact-bottom .link-button { background: #f1eee5; color: #1c2925; border-color: #f1eee5; }
+    .contact-bottom .link-button:hover { background: #1c2925; color: #f1eee5; border-color: #1c2925; }
+    .contact-email { font: 500 clamp(1rem, 2.4vw, 1.6rem) var(--display); overflow-wrap: anywhere; }
+    footer { padding: 22px 0; }
+    .footer-inner { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; color: var(--muted); }
+    .footer-inner .mono { font-size: .62rem; }
+    .reveal { opacity: 0; transform: translateY(18px); transition: opacity .65s ease, transform .65s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .command-hint { position: fixed; bottom: 18px; right: 18px; z-index: 12; }
+    .command-hint button { background: var(--ink); color: var(--paper); border: 1px solid var(--ink); padding: 10px 13px; box-shadow: 4px 4px 0 var(--red); cursor: pointer; font: .68rem var(--mono); }
+    .command-hint kbd { border: 1px solid currentColor; padding: 1px 4px; margin-left: 8px; }
+    .command-overlay { position: fixed; inset: 0; z-index: 30; background: rgba(12,18,15,.68); display: none; place-items: start center; padding: 16vh 20px 20px; }
+    .command-overlay.open { display: grid; }
+    .command-box { width: min(540px,100%); background: var(--paper); color: var(--ink); border: 1px solid var(--ink); box-shadow: 9px 9px 0 var(--red); }
+    .command-box input { width: 100%; border: 0; border-bottom: 1px solid var(--line); outline: none; padding: 18px; font: 1rem var(--mono); color: var(--ink); background: transparent; }
+    .command-list { padding: 8px; }
+    .command-list button { width: 100%; text-align: left; display: flex; justify-content: space-between; padding: 12px; border: 0; background: transparent; cursor: pointer; }
+    .command-list button:hover { background: var(--paper-2); }
+    .command-list small { color: var(--muted); font-family: var(--mono); }
+    .no-results { padding: 12px; color: var(--muted); font-size: .9rem; }
+    @media (max-width: 760px) {
+      .shell { width: calc(100% - 32px); }
+      .topbar-inner { min-height: 58px; }
+      .nav { gap: 12px; }
+      .nav a:nth-child(2), .nav a:nth-child(3) { display: none; }
+      .hero { padding: 55px 0 42px; }
+      .hero-grid { grid-template-columns: 1fr; gap: 35px; }
+      .hero-aside { display: grid; grid-template-columns: 100px 1fr; gap: 15px; border-left: 0; border-top: 1px solid var(--line); padding: 20px 0 0; align-items: center; }
+      .big-number { font-size: 4rem; }
+      .aside-note { margin: 0; }
+      .section { padding: 52px 0; }
+      .section-head { grid-template-columns: 1fr; gap: 10px; margin-bottom: 25px; }
+      .about-layout, .project-grid, .education-grid { grid-template-columns: 1fr; }
+      .cove { grid-column: auto; min-height: 400px; }
+      .cove .project-main { max-width: 100%; }
+      .cove .cove-art { width: 155px; height: 155px; right: 8px; top: 95px; opacity: .38; }
+      .cove .project-main { padding-top: 28px; }
+      .exp-row { grid-template-columns: 1fr 32px; gap: 9px 15px; }
+      .exp-date { grid-column: 1; }
+      .exp-main { grid-column: 1; grid-row: 2; }
+      .exp-toggle { grid-column: 2; grid-row: 1 / span 2; }
+      .contact-bottom { align-items: flex-start; flex-direction: column; }
+      .command-hint { bottom: 12px; right: 12px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; scroll-behavior: auto !important; transition: none !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="shell topbar-inner">
+      <a class="wordmark" href="#top" aria-label="Sai Prasad Kousika home"><span class="stamp">SP</span> SAI PRASAD KOUSIKA</a>
+      <nav class="nav" aria-label="Main navigation">
+        <a href="#about">01 / About</a><a href="#work">02 / Work</a><a href="#experience">03 / Career</a><a href="#contact">Contact ↗</a>
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark mode">◐ MODE</button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero shell">
+      <div class="hero-grid">
+        <div>
+          <div class="kicker mono">Independent mind · Systems engineer</div>
+          <h1>Curious by<br>default<span class="slash">.</span><br><span class="outline">Precise</span> by<br>design<span class="slash">.</span></h1>
+          <p class="hero-copy">Hi, I'm Sai. I enjoy understanding how things work, making useful things, and learning something new along the way. By day, I build software at Microsoft. Outside my day job, I’m building <strong>Cove Journal</strong> — a small, private space for people to write down their thoughts. I believe good work should be useful, dependable, and thoughtful.</p>
+          <div class="hero-links">
+            <a class="link-button" href="#work">Explore selected work <span>↘</span></a>
+            <a class="link-button secondary" href="mailto:saiprasad.iitb@gmail.com">Say hello ↗</a>
+          </div>
+        </div>
+        <aside class="hero-aside">
+          <div>
+            <div class="index-label mono">Currently / 001</div>
+            <div class="big-number">MSFT<span style="font-size:.32em;vertical-align:top;letter-spacing:0">®</span></div>
+          </div>
+          <p class="aside-note">Senior Software Engineer<br>Building systems at scale.<br><span style="color:var(--red)">Bengaluru, India · IST</span></p>
+        </aside>
+      </div>
+    </section>
+
+    <div class="ticker" aria-label="Areas of interest">
+      <div class="ticker-track" aria-hidden="true">
+        <span>Database internals <b>✳</b></span><span>Query optimization <b>✳</b></span><span>Private software <b>✳</b></span><span>System design <b>✳</b></span><span>Useful details <b>✳</b></span><span>Database internals <b>✳</b></span><span>Query optimization <b>✳</b></span><span>Private software <b>✳</b></span><span>System design <b>✳</b></span><span>Useful details <b>✳</b></span>
+      </div>
+    </div>
+
+    <section class="section shell reveal" id="about">
+      <div class="section-head">
+        <div class="section-index mono">01 / Point of view</div>
+        <div><h2>Good engineering<br>is mostly good thinking.</h2><p class="section-intro">I’m happiest when I’m learning, solving a real problem, or turning an idea into something people can use. My career has taken me through Oracle, Salesforce, and Microsoft; each place has taught me a different way to approach problems and work with people.</p></div>
+      </div>
+      <div class="about-layout">
+        <div class="manifesto">
+          <div class="mono">Working principle / 01</div>
+          <p>Stay curious. Build things that are <em>useful.</em> Treat people well. Keep learning, even when nobody is asking you to.</p>
+          <div class="quote-mark">“</div>
+        </div>
+        <div class="facts">
+          <div class="fact"><div class="mono">01 / Work</div><strong>Software engineer</strong><small>Microsoft · Bengaluru</small></div>
+          <div class="fact"><div class="mono">02 / Build</div><strong>Cove Journal</strong><small>A personal project</small></div>
+          <div class="fact"><div class="mono">03 / Learn</div><strong>IIT Bombay</strong><small>Master’s in Computer Science</small></div>
+          <div class="fact"><div class="mono">04 / Give back</div><strong>Volunteer</strong><small>Community and public service</small></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section shell reveal" id="work">
+      <div class="section-head">
+        <div class="section-index mono">02 / Things I've made</div>
+        <div><h2>Ideas, turned<br>into real things.</h2><p class="section-intro">Some are products, some are work I’m proud of, and some began as university projects. I’ve kept the descriptions focused on the problem and why it mattered.</p></div>
+      </div>
+      <div class="filter-row" role="group" aria-label="Filter projects">
+        <button class="filter-btn" data-filter="all" aria-pressed="true">Everything / 04</button>
+        <button class="filter-btn" data-filter="product" aria-pressed="false">Personal product</button>
+        <button class="filter-btn" data-filter="systems" aria-pressed="false">Data systems</button>
+        <button class="filter-btn" data-filter="academic" aria-pressed="false">Academic</button>
+      </div>
+      <div class="project-grid">
+        <article class="project cove" data-category="product">
+          <svg class="cove-art" viewBox="0 0 260 260" fill="none" aria-hidden="true">
+            <circle class="orbital" cx="130" cy="130" r="102" stroke="#c8d9a5" stroke-width="1.2" stroke-dasharray="3 8"/>
+            <circle class="orbital" cx="130" cy="130" r="76" stroke="#c8d9a5" stroke-width="1.5" stroke-dasharray="40 12"/>
+            <path d="M58 151 C80 113, 103 184, 130 139 S184 91, 202 126" stroke="#c8d9a5" stroke-width="2" stroke-linecap="round"/>
+            <path d="M70 169 C92 131, 113 199, 142 153 S181 111, 195 143" stroke="#c8d9a5" stroke-opacity=".55" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="130" cy="130" r="9" fill="#d84d31"/>
+            <circle cx="204" cy="90" r="4" fill="#c8d9a5"/>
+          </svg>
+          <div class="project-top"><span class="project-type mono">Personal product / 001</span><span class="project-number mono">ANDROID ↗</span></div>
+          <div class="project-main">
+            <h3>Cove Journal</h3>
+            <p>A quiet place for your thoughts. A privacy-first journal designed around personal writing, with on-device storage, encryption, mood tracking, goals, reminders, and a calendar to look back on your days.</p>
+            <div class="project-bottom">
+              <div class="chips"><span class="chip">PRIVACY</span><span class="chip">JOURNALING</span><span class="chip">ANDROID</span></div>
+              <a class="project-link" href="https://play.google.com/store/apps/details?id=app.cove.privatejournal" target="_blank" rel="noopener noreferrer">Open on Play Store ↗</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="project" data-category="systems">
+          <div class="project-top"><span class="project-type mono">Database systems / 002</span><span class="project-number mono">SQL SERVER</span></div>
+          <div class="project-main">
+            <h3>Scalar UDF Inlining</h3>
+            <p>Turning eligible scalar functions into relational expressions so the query optimizer can reason about them and improve execution performance.</p>
+            <div class="project-bottom"><div class="chips"><span class="chip">QUERY OPTIMIZATION</span><span class="chip">AZURE</span></div><span class="mono">MICROSOFT</span></div>
+          </div>
+        </article>
+
+        <article class="project" data-category="systems">
+          <div class="project-top"><span class="project-type mono">Database systems / 003</span><span class="project-number mono">T-SQL</span></div>
+          <div class="project-main">
+            <h3>Regular Expression Support</h3>
+            <p>Led work integrating a regular-expression library into the SQL engine, navigating memory management, yielding, design trade-offs, and release readiness.</p>
+            <div class="project-bottom"><div class="chips"><span class="chip">ENGINEERING</span><span class="chip">DESIGN</span></div><span class="mono">MICROSOFT</span></div>
+          </div>
+        </article>
+
+        <article class="project" data-category="academic">
+          <div class="project-top"><span class="project-type mono">Academic / 004</span><span class="project-number mono">APACHE SPARK</span></div>
+          <div class="project-main">
+            <h3>Recurring Query Optimization</h3>
+            <p>Extended query optimization for recurring workloads by creating materialized views and rewriting queries to reuse results, including complex aggregate cases.</p>
+            <div class="project-bottom"><div class="chips"><span class="chip">IIT BOMBAY</span><span class="chip">OPTIMIZATION</span></div><span class="mono">2018—19</span></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section shell reveal" id="experience">
+      <div class="section-head">
+        <div class="section-index mono">03 / My journey</div>
+        <div><h2>Different teams.<br>More to learn.</h2><p class="section-intro">I started at Oracle, moved to Microsoft, spent time at Salesforce, and returned to Microsoft. Every role has been a chance to learn from teammates and take on a new kind of challenge. Tap a role for more.</p></div>
+      </div>
+      <div class="experience-list">
+        <article class="exp-row" data-open="true">
+          <div class="exp-date mono">NOV 2024 — NOW</div>
+          <div class="exp-main"><div class="exp-title">Senior Software Engineer</div><div class="exp-company">Microsoft · Bengaluru</div><div class="exp-details"><p>Working on software engineering at Microsoft. Current project details are intentionally kept high-level.</p></div></div>
+          <button class="exp-toggle" aria-label="Collapse Microsoft experience" aria-expanded="true">−</button>
+        </article>
+        <article class="exp-row" data-open="false">
+          <div class="exp-date mono">MAR — NOV 2024</div>
+          <div class="exp-main"><div class="exp-title">Senior Member of Technical Staff</div><div class="exp-company">Salesforce · Conversation Storage Service</div><div class="exp-details"><p>Led temporary-table optimization for large organization migrations across Falcon instances and extended the implementation to support multi-commits.</p></div></div>
+          <button class="exp-toggle" aria-label="Expand Salesforce experience" aria-expanded="false">+</button>
+        </article>
+        <article class="exp-row" data-open="false">
+          <div class="exp-date mono">FEB 2020 — MAR 2024</div>
+          <div class="exp-main"><div class="exp-title">Software Engineer II</div><div class="exp-company">Microsoft · SQL Server / Azure SQL</div><div class="exp-details"><p>Led T-SQL regular-expression support, contributed to Parameter Sensitive Plan and Query Store work, and owned deployment for Scalar UDF Inlining across Azure servers. Recognized with the Azure Data Best Collaboration Award.</p></div></div>
+          <button class="exp-toggle" aria-label="Expand Microsoft experience" aria-expanded="false">+</button>
+        </article>
+        <article class="exp-row" data-open="false">
+          <div class="exp-date mono">AUG 2019 — FEB 2020</div>
+          <div class="exp-main"><div class="exp-title">Member of Technical Staff</div><div class="exp-company">Oracle India · Bengaluru</div><div class="exp-details"><p>Started my industry career working on software systems at Oracle.</p></div></div>
+          <button class="exp-toggle" aria-label="Expand Oracle experience" aria-expanded="false">+</button>
+        </article>
+      </div>
+    </section>
+
+    <section class="section shell reveal" id="life">
+      <div class="section-head">
+        <div class="section-index mono">04 / Beyond the job title</div>
+        <div><h2>A little more<br>about me.</h2><p class="section-intro">Work is one part of a life, not the whole story. I’ve also made time for volunteering, learning, and projects that began simply because I wanted to understand something better.</p></div>
+      </div>
+      <div class="project-grid">
+        <article class="project" data-category="personal">
+          <div class="project-top"><span class="project-type mono">Community / 01</span><span class="project-number mono">2014 · 2019 · 2021</span></div>
+          <div class="project-main">
+            <h3>Showing up for others</h3>
+            <p>I volunteered with Youth for Seva in Bengaluru, helped organize a team auction for Microsoft’s Give Campaign, and served as a webcasting volunteer during India’s 2014 general elections.</p>
+            <div class="project-bottom"><div class="chips"><span class="chip">VOLUNTEERING</span><span class="chip">COMMUNITY</span></div><span class="mono">GIVE BACK</span></div>
+          </div>
+        </article>
+        <article class="project" data-category="personal">
+          <div class="project-top"><span class="project-type mono">Curiosity / 02</span><span class="project-number mono">ALWAYS LEARNING</span></div>
+          <div class="project-main">
+            <h3>Learning by building</h3>
+            <p>Some of my favourite projects started in university: a Smart Music Player, graph algorithms using a simulated Pregel framework, and work on making repeated data queries more efficient. I like learning by making something concrete.</p>
+            <div class="project-bottom"><div class="chips"><span class="chip">SIDE PROJECTS</span><span class="chip">EXPERIMENTS</span></div><span class="mono">MAKE · LEARN</span></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section shell reveal" id="education">
+      <div class="section-head">
+        <div class="section-index mono">05 / Foundations</div>
+        <div><h2>Learned to<br>think in systems.</h2></div>
+      </div>
+      <div class="education-grid">
+        <article class="edu-card"><div class="edu-year mono">POST GRADUATION / 2019</div><h3>Indian Institute of Technology Bombay</h3><p>Computer Science &amp; Engineering · CPI 8.98</p></article>
+        <article class="edu-card"><div class="edu-year mono">GRADUATION / 2017</div><h3>RGUKT Nuzvid</h3><p>Computer Science &amp; Engineering · CPI 8.87</p></article>
+      </div>
+      <div class="rank"><strong>37</strong><span>All India Rank in GATE Computer Science, 2017 — among 96,878 candidates.</span></div>
+    </section>
+
+    <section class="section contact-section" id="contact">
+      <div class="shell">
+        <div class="section-head">
+          <div class="section-index mono">06 / Open channel</div>
+          <div><h2>Have a good<br>problem in mind?</h2><p class="section-intro">If you’re building something interesting, have a question, or just want to exchange ideas, feel free to reach out. I’m always glad to meet people who are curious and kind.</p></div>
+        </div>
+        <div class="contact-bottom">
+          <div><div class="mono" style="margin-bottom:9px">Direct line / Email</div><a class="contact-email" href="mailto:saiprasad.iitb@gmail.com">saiprasad.iitb@gmail.com ↗</a></div>
+          <a class="link-button" href="https://play.google.com/store/apps/details?id=app.cove.privatejournal" target="_blank" rel="noopener noreferrer">Try Cove Journal ↗</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell footer-inner"><span class="mono">© <span id="year"></span> SAI PRASAD KOUSIKA</span><span class="mono">DESIGNED WITH INTENTION · NOT A TEMPLATE</span><a class="mono" href="#top">BACK TO TOP ↑</a></div>
+  </footer>
+
+  <div class="command-hint"><button id="openCommand" type="button">⌘ QUICK JUMP <kbd>/</kbd></button></div>
+  <div class="command-overlay" id="commandOverlay" role="dialog" aria-modal="true" aria-label="Quick navigation">
+    <div class="command-box">
+      <input id="commandInput" type="text" placeholder="Type to jump somewhere…" aria-label="Search sections" autocomplete="off" />
+      <div class="command-list" id="commandList">
+        <button data-target="#about"><span>About / Point of view</span><small>01</small></button>
+        <button data-target="#work"><span>Selected work / Projects</span><small>02</small></button>
+        <button data-target="#experience"><span>Career log</span><small>03</small></button>
+        <button data-target="#life"><span>A little more about me</span><small>04</small></button>
+        <button data-target="#education"><span>Education</span><small>05</small></button>
+        <button data-target="#contact"><span>Contact</span><small>06</small></button>
+        <button data-target="cove"><span>Open Cove Journal on Google Play</span><small>↗</small></button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const root = document.documentElement;
+    const themeToggle = document.getElementById('themeToggle');
+    themeToggle.addEventListener('click', () => {
+      const night = root.getAttribute('data-theme') !== 'night';
+      root.setAttribute('data-theme', night ? 'night' : 'day');
+      themeToggle.textContent = night ? '☼ LIGHT' : '◐ MODE';
+      document.querySelector('meta[name="theme-color"]').content = night ? '#17201c' : '#f1eee5';
+    });
+
+    document.querySelectorAll('.filter-btn').forEach(button => {
+      button.addEventListener('click', () => {
+        const filter = button.dataset.filter;
+        document.querySelectorAll('.filter-btn').forEach(b => b.setAttribute('aria-pressed', String(b === button)));
+        document.querySelectorAll('.project').forEach(card => {
+          card.hidden = filter !== 'all' && card.dataset.category !== filter;
+        });
+      });
+    });
+
+    document.querySelectorAll('.exp-toggle').forEach(button => {
+      button.addEventListener('click', () => {
+        const row = button.closest('.exp-row');
+        const isOpen = row.dataset.open === 'true';
+        row.dataset.open = String(!isOpen);
+        button.textContent = isOpen ? '+' : '−';
+        button.setAttribute('aria-expanded', String(!isOpen));
+        button.setAttribute('aria-label', `${isOpen ? 'Expand' : 'Collapse'} ${row.querySelector('.exp-title').textContent} experience`);
+      });
+    });
+
+    const revealObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    const overlay = document.getElementById('commandOverlay');
+    const input = document.getElementById('commandInput');
+    const openCommand = () => {
+      overlay.classList.add('open');
+      input.value = '';
+      filterCommands('');
+      setTimeout(() => input.focus(), 0);
+    };
+    const closeCommand = () => overlay.classList.remove('open');
+    document.getElementById('openCommand').addEventListener('click', openCommand);
+    overlay.addEventListener('click', e => { if (e.target === overlay) closeCommand(); });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeCommand();
+      if (e.key === '/' && !['INPUT','TEXTAREA'].includes(document.activeElement.tagName)) {
+        e.preventDefault(); openCommand();
+      }
+    });
+    function filterCommands(query) {
+      let count = 0;
+      document.querySelectorAll('#commandList button').forEach(button => {
+        const match = button.textContent.toLowerCase().includes(query.toLowerCase());
+        button.hidden = !match;
+        if (match) count++;
+      });
+      let empty = document.querySelector('.no-results');
+      if (!count && !empty) {
+        empty = document.createElement('div');
+        empty.className = 'no-results';
+        empty.textContent = 'No matching destination. Try “work” or “contact”.';
+        document.getElementById('commandList').appendChild(empty);
+      } else if (count && empty) empty.remove();
+    }
+    input.addEventListener('input', () => filterCommands(input.value));
+    document.querySelectorAll('#commandList button').forEach(button => {
+      button.addEventListener('click', () => {
+        const target = button.dataset.target;
+        closeCommand();
+        if (target === 'cove') window.open('https://play.google.com/store/apps/details?id=app.cove.privatejournal', '_blank', 'noopener');
+        else document.querySelector(target).scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+  </script>
+</body>
+</html>
